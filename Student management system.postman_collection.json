@@ -1,0 +1,261 @@
+{
+	"info": {
+		"_postman_id": "a6046404-3e7b-4206-bd86-9d2dd51a526f",
+		"name": "Student management system",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10903305"
+	},
+	"item": [
+		{
+			"name": "Register new user",
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n    \"userName\":\"omarMahdy\",\r\n    \"email\":\"mahsdy@gmail.com\",\r\n    \"password\":\"aBc2#233\",\r\n    \"role\":\"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/rest/auth/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"auth",
+						"register"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login ",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer ",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"mahsdy@gmail.com\",\r\n    \"password\":\"aBc2#233\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/rest/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add student with jwtToken of an admin",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxIiwicm9sZSI6ImFkbWluIiwic3ViIjoibWFoc2R5QGdtYWlsLmNvbSIsImV4cCI6MTcyMjEwNjIxMiwiaWF0IjoxNzIyMTA0NDEyfQ.DcyNzBSgxJNblNmjHhpwMZflP7GXk4tNADqZksycYMc",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n        \"firstName\": \"som3a\",\r\n        \"lastName\":\"sa3da\",\r\n        \"dateOfBirth\":\"2012-12-11\",\r\n        \"email\":\"sa3da22@gmail.com\"\r\n\r\n        \r\n    \r\n   \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/students",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"students"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all students with jwtToken of an admin",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxIiwicm9sZSI6ImFkbWluIiwic3ViIjoiYWxpZXNtYWlsOTRAZ21haWwuY29tIiwiZXhwIjoxNzIyMDgxMzYxLCJpYXQiOjE3MjIwNzk1NjF9.sjZzVIPQf7EjfN-5GC7Ha6R92cbvO4qpGOLDMzrSYl4",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/students",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"students"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update a student with jwtToken of an admin",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxIiwicm9sZSI6ImFkbWluIiwic3ViIjoiYWxpZXNtYWlsOTRAZ21haWwuY29tIiwiZXhwIjoxNzIyMDkyNDA2LCJpYXQiOjE3MjIwOTA2MDZ9.h3iONgE_t1AHzniN_TExZVY_vIhKbf2B5woeK8ciNG8",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "        {\r\n            \r\n            \"firstName\": \"sa3da\",\r\n            \"lastName\":\"som3a\",\r\n            \"dateOfBirth\":\"2012-11-11\",\r\n            \"email\":\"taha97@gmail.com\"\r\n\r\n        }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/students?id=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"students"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a student with jwtToken of an admin",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxIiwicm9sZSI6ImFkbWluIiwic3ViIjoiYWxpOTRAZ21haWwuY29tIiwiZXhwIjoxNzIyMDUzOTg3LCJpYXQiOjE3MjIwNTIxODd9.-XRJ-sH-zuCaWPKWzdWQkCW17z_tVTZl2CPSvIhJ7c0",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/students?id=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"students"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get student info with jwtToken of a student",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyIiwicm9sZSI6InN0dWRlbnQiLCJzdWIiOiJtYWhkeUBnbWFpbC5jb20iLCJleHAiOjE3MjIwOTI0ODUsImlhdCI6MTcyMjA5MDY4NX0.PzXurvnyO490TThQLLHkSTnmCPNyq9kiRLFE7qQXX4c",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/students/student?id=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"students",
+						"student"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
