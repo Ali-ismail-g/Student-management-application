@@ -20,7 +20,7 @@ public class RegisterRequest {
     @Email(message = "the email is not valid.")
     private String email;
     @NotBlank(message = "The password is required.")
-    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!*()]).{8,}$", message = "Password must be 8 characters long and combination of uppercase letters, lowercase letters, numbers, special characters.")
+    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!*()]).{8,}$", message = "Password must be 8 characters long and a combination of uppercase letters, lowercase letters, numbers, and special characters.")
     private String password;
     @EnumValidator(acceptedValues = {"admin","student"})
     public Role role;

@@ -7,9 +7,7 @@ import com.app.studentManagementSystem.model.request.RegisterRequest;
 import com.app.studentManagementSystem.model.request.StudentRequest;
 import com.app.studentManagementSystem.model.response.LoginResponse;
 import com.app.studentManagementSystem.model.response.RegisterResponse;
-import jakarta.mail.MessagingException;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.*;
@@ -19,56 +17,73 @@ import org.springframework.web.client.RestTemplate;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class StudentManagementSystemApplicationTests {
 	@Autowired
 	private RestTemplate restTemplate;
 	private String jwtToken;
 
-	@Test
-	void contextLoads() {
+//	@Test
+//	void contextLoads() {
+//	}
+	@BeforeEach
+	public void obtainJwtToken(TestInfo testInfo){
+		if (!testInfo.getTestMethod().get().getName().equals("testRegister")) {
+			String url = "http://localhost:8080/rest/auth/login";
+			LoginRequest loginRequest = new LoginRequest();
+			loginRequest.setEmail("mahsdy@gmail.com");
+			loginRequest.setPassword("Abcd!234");
+			HttpEntity<LoginRequest> entity = new HttpEntity<>(loginRequest);
+			ResponseEntity<LoginResponse> responseEntity = restTemplate.postForEntity(url,entity, LoginResponse.class);
+			jwtToken = responseEntity.getBody().getToken();
+			System.out.println(jwtToken);
+		}
 	}
 	@Test
+	@Order(1)
 	public void testRegister(){
 		String url = "http://localhost:8080/rest/auth/register";
 		RegisterRequest registerRequest = new RegisterRequest();
-		registerRequest.setEmail("aliesmail94@gmail.com");
+		registerRequest.setUserName("omarMahdy");
+		registerRequest.setPassword("Abcd!234");
+		registerRequest.setEmail("mahsdy@gmail.com");
 		registerRequest.setRole(Role.admin);
-		registerRequest.setPassword("99999");
-		registerRequest.setUserName("aliIsmail");
-
 		HttpEntity<RegisterRequest> entity = new HttpEntity<>(registerRequest);
-		ResponseEntity<RegisterResponse> responseEntity = restTemplate.postForEntity(url,entity, RegisterResponse.class);
-		assertEquals(HttpStatus.OK,responseEntity.getStatusCode());
-		assertNotNull(responseEntity.getBody().getSuccessMessage());
+
+		try{
+			ResponseEntity<RegisterResponse> responseEntity = restTemplate.postForEntity(url,entity, RegisterResponse.class);
+			System.out.println("res entity: "+responseEntity);
+			assertEquals(HttpStatus.OK,responseEntity.getStatusCode());
+			assertNotNull(Objects.requireNonNull(responseEntity.getBody()).getSuccessMessage());
+		}catch (HttpServerErrorException e) {
+			System.out.println("HTTP Status Code: " + e.getStatusCode());
+			System.out.println("Response Body: " + e.getResponseBodyAsString());
+			throw e;
+		}
 	}
 	@Test
+	@Order(2)
 	public void testLogin(){
 		String url = "http://localhost:8080/rest/auth/login";
 		LoginRequest loginRequest = new LoginRequest();
-		loginRequest.setEmail("aliesmail94@gmail.com");
-		loginRequest.setPassword("99999");
+		loginRequest.setEmail("mahsdy@gmail.com");
+		loginRequest.setPassword("Abcd!234");
 		HttpEntity<LoginRequest> entity = new HttpEntity<>(loginRequest);
 		ResponseEntity<LoginResponse> responseEntity = restTemplate.postForEntity(url,entity, LoginResponse.class);
+		System.out.println("res "+responseEntity);
+//		jwtToken = responseEntity.getBody().getToken();
 		assertEquals(HttpStatus.OK,responseEntity.getStatusCode());
 		assertNotNull(responseEntity.getBody().getToken());
 	}
-	@BeforeEach
-	public void obtainJwtToken(){
-		String url = "http://localhost:8080/rest/auth/login";
-		LoginRequest loginRequest = new LoginRequest();
-		loginRequest.setEmail("aliesmail94@gmail.com");
-		loginRequest.setPassword("99999");
-		HttpEntity<LoginRequest> entity = new HttpEntity<>(loginRequest);
-		ResponseEntity<LoginResponse> responseEntity = restTemplate.postForEntity(url,entity, LoginResponse.class);
-		jwtToken = responseEntity.getBody().getToken();
-		System.out.println(jwtToken);
-	}
+
 	@Test
+	@Order(3)
 	public void createStudent() throws ParseException {
 		String url = "http://localhost:8080/api/students";
 		HttpHeaders headers = new HttpHeaders();
@@ -84,7 +99,7 @@ class StudentManagementSystemApplicationTests {
 		try {
 			ResponseEntity<Student> responseEntity = restTemplate.exchange(url, HttpMethod.POST, entity, Student.class);
 			assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-			assertNotNull(responseEntity.getBody().getEmail());
+			assertNotNull(Objects.requireNonNull(responseEntity.getBody()).getEmail());
 		} catch (HttpServerErrorException e) {
 			System.out.println("HTTP Status Code: " + e.getStatusCode());
 			System.out.println("Response Body: " + e.getResponseBodyAsString());
@@ -92,6 +107,7 @@ class StudentManagementSystemApplicationTests {
 		}
 	}
 	@Test
+	@Order(4)
 	public void updateStudent() throws ParseException {
 		String url = "http://localhost:8080/api/students?id=1";
 		HttpHeaders headers = new HttpHeaders();
@@ -115,6 +131,7 @@ class StudentManagementSystemApplicationTests {
 		}
 	}
 	@Test
+	@Order(5)
 	public void getStudents(){
 		String url = "http://localhost:8080/api/students";
 		HttpHeaders headers = new HttpHeaders();
@@ -124,6 +141,7 @@ class StudentManagementSystemApplicationTests {
 		assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
 	}
 	@Test
+	@Order(6)
 	public void deleteStudent(){
 		String url = "http://localhost:8080/api/students?id=1";
 		HttpHeaders headers = new HttpHeaders();
@@ -139,12 +157,13 @@ class StudentManagementSystemApplicationTests {
 		}
 	}
 	@Test
+	@Order(7)
 	public void getStudent(){
 		String url = "http://localhost:8080/rest/auth/register";
 		RegisterRequest registerRequest = new RegisterRequest();
 		registerRequest.setEmail("zizo97@gmail.com");
 		registerRequest.setRole(Role.student);
-		registerRequest.setPassword("99999");
+		registerRequest.setPassword("aBc2#233");
 		registerRequest.setUserName("omarZizo");
 		HttpEntity<RegisterRequest> entity = new HttpEntity<>(registerRequest);
 		ResponseEntity<RegisterResponse> responseEntity = restTemplate.postForEntity(url,entity, RegisterResponse.class);
@@ -152,7 +171,7 @@ class StudentManagementSystemApplicationTests {
 		String url2 = "http://localhost:8080/rest/auth/login";
 		LoginRequest loginRequest = new LoginRequest();
 		loginRequest.setEmail("zizo97@gmail.com");
-		loginRequest.setPassword("99999");
+		loginRequest.setPassword("aBc2#233");
 		HttpEntity<LoginRequest> entity2 = new HttpEntity<>(loginRequest);
 		ResponseEntity<LoginResponse> responseEntity2 = restTemplate.postForEntity(url2,entity2, LoginResponse.class);
 		String token=responseEntity2.getBody().getToken();

@@ -33,7 +33,7 @@ public class AuthService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    public RegisterResponse Register(RegisterRequest registerRequest){
+    public RegisterResponse register(RegisterRequest registerRequest){
         User oldUser = userRepository.findUserByEmail(registerRequest.getEmail());
                 if(oldUser != null){
                     throw new UserRegisteredException("User is already registered in database..change this email!!");
@@ -45,9 +45,9 @@ public class AuthService {
                 .password(bCryptPasswordEncoder.encode(registerRequest.getPassword()))
                 .build();
         User savedUser = userRepository.save(user);
-        return new RegisterResponse("User Registered Successfully!!", registerRequest.getEmail());
+        return new RegisterResponse( registerRequest.getEmail(),"User Registered Successfully!!");
     }
-    public LoginResponse Login(LoginRequest loginRequest){
+    public LoginResponse login(LoginRequest loginRequest){
         User notUser = userRepository.findUserByEmail(loginRequest.getEmail());
         if(notUser == null){
             throw new UserNotFoundException("User is not registered in database..!!");

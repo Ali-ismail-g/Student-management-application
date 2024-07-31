@@ -43,13 +43,13 @@ public class AuthController {
     @Parameter(name = "RegisterRequest",description = "this class consists of requested body for this API: userName,email,password & role",required = true)
     @ApiResponse(responseCode = "200",description = "Successful request")
     public ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest registerRequest){
-        return ResponseEntity.ok(authService.Register(registerRequest));
+        return ResponseEntity.ok(authService.register(registerRequest));
     }
     @PostMapping(value="/login")
     @Operation(summary = "Login specific user",description = "this API will login with an existing user in database")
     @Parameter(name = "LoginRequest",description = "this class consists of requested body for this API: email & password",required = true)
     @ApiResponse(responseCode = "200",description = "Successful request")
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest){
-        return ResponseEntity.ok(authService.Login(loginRequest));
+        return ResponseEntity.ok(authService.login(loginRequest));
     }
 }
